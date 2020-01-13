@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
 import { CustomHttpService } from './custom-http.service';
+import { EditorComponent } from './editor/editor.component';
 
 describe(`AppModule`, () => {
   beforeEach(() => {
@@ -16,8 +17,14 @@ describe(`AppModule`, () => {
     expect(() => TestBed.get(AppComponent)).toBeTruthy();
   });
 
+  it('should import EditorComponent', () => {
+    expect(() => TestBed.get(EditorComponent)).toBeTruthy();
+  });
+
   it('should not define CustomHttpService', () => {
-    expect(() => TestBed.get(CustomHttpService)).toThrowError(/No provider for/);
+    expect(() => TestBed.get(CustomHttpService)).toThrowError(
+      /No provider for/
+    );
   });
 });
 
