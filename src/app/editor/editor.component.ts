@@ -1,3 +1,6 @@
+// const path = require('path');
+// const fs = require('fs');
+
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -19,11 +22,32 @@ export class EditorComponent implements OnInit {
    *
    * @name translationFiles
    */
-  translationFiles: File[];
+  translationFiles: string[];
 
   constructor() {}
 
+  /**
+   * Get all the json files in the folder
+   * @todo SEND THIS TO EXPRESS
+   */
   ngOnInit() {
-    // Get all the json files in the folder
+    this.translationFiles = ['en.json', 'fr.json'];
+
+    // // joining path of directory
+    // const directoryPath = path.join(this.translationsFolder);
+    // console.log('dir = ', directoryPath);
+    // // passing directoryPath and callback function
+    // fs.readdir(this.translationsFolder, (err, files) => {
+    //   // handling error
+    //   if (err) {
+    //     return console.log('Unable to scan directory: ' + err);
+    //   }
+    //   // getting all the json files
+    //   files.forEach(file => {
+    //     if (path.extname(file) === 'json') {
+    //       this.translationFiles.push(file);
+    //     }
+    //   });
+    // });
   }
 }

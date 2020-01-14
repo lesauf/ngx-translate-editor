@@ -9,6 +9,16 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "browser": {
+    "crypto": false,
+    "http": false,
+    "https": false,
+    "net": false,
+    "path": false,
+    "fs": false,
+    "stream": false,
+    "tls": false
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~8.2.14",
@@ -33,7 +43,7 @@
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
     "@types/jest": "^24.0.25",
-    "@types/node": "~8.9.4",
+    "@types/node": "^8.9.5",
     "codelyzer": "^5.0.0",
     "jest": "^24.9.0",
     "protractor": "~5.4.0",

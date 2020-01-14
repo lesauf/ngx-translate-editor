@@ -8,9 +8,8 @@ describe('EditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditorComponent ]
-    })
-    .compileComponents();
+      declarations: [EditorComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,15 @@ describe('EditorComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should exist', () => {
     expect(component).toBeTruthy();
+  });
+
+  // Test properties existence
+  it('Property translationsFolder should exist', () => {
+    expect(component).toHaveProperty('translationsFolder');
+  });
+  it('Property translationFiles should exist', () => {
+    expect(component).toHaveProperty('translationFiles', undefined);
   });
 });
