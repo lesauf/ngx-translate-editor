@@ -1,7 +1,11 @@
 <div class="center">
   <span>Editor</span>
 
-  <div *ngFor="let translationFile of translationFiles">
-    {{ translationFile }}
+  <div *ngFor="let tKey of this.translationKeys; index as i">
+    {{ i }} - {{ tKey }} :
+    <div *ngFor="let lang of this.languages">
+      {{ lang }} : {{ this.translations[tKey][lang] }}
+    </div>
+    <hr>
   </div>
 </div>

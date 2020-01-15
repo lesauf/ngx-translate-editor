@@ -23,10 +23,10 @@ describe('EditorComponent', () => {
   });
 
   // Test properties existence
-  it('Property translationsFolder should exist', () => {
-    expect(component).toHaveProperty('translationsFolder');
-  });
-  it('Property translationFiles should exist', () => {
-    expect(component).toHaveProperty('translationFiles', undefined);
-  });
+  // it('Property translationsFolder should exist', () => {
+  //   expect(component).toHaveProperty('translationsFolder');
+  // });
+  // it('Property translationFiles should exist', () => {
+  //   expect(component).toHaveProperty('translationFiles', undefined);
+  // });
 });
