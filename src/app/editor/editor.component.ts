@@ -1,7 +1,5 @@
-// const path = require('path');
-// const fs = require('fs');
-
 import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-editor',
@@ -61,34 +59,61 @@ export class EditorComponent implements OnInit {
     }
   };
 
-  public translationKeys: string[];
-
   public flatTranslations = {};
 
-  constructor() {}
+  public translationKeys: string[];
 
-  /**
-   *
-   */
-  ngOnInit() {
+  public defaultLanguage: string = 'en';
+
+  public translationForm;
+
+  constructor(private formBuilder: FormBuilder) {
+    // Get the languages from the translations
+    this.languages = Object.keys(this.translations);
+
     // Flatten the translation object
     for (let lang in this.translations) {
       this.flatTranslations[lang] = {};
 
-      this.flattenTranslations(
+      this._flattenTranslations(
         this.translations[lang],
         this.flatTranslations[lang]
       );
     }
 
+    // Get the translations keys from the default language
+    this.translationKeys = Object.keys(
+      this.flatTranslations[this.defaultLanguage]
+    );
+
+    // Build form
+    this.translationForm = this.formBuilder.group(this.flatTranslations);
+  }
+
+  /**
+   *
+   */
+  ngOnInit() {
     console.log('Flat: ', this.flatTranslations);
+  }
+
+  /**
+   * Save translations
+   *
+   * @param translationData form data
+   */
+  onSubmit(translationData) {
+    // Process translations data here
+    console.warn('Translations saved', translationData);
+
+    this.translationForm.reset();
   }
 
   /**
    * Recursive function to convert translations keys as dot notation
    * from the first language
    */
-  public flattenTranslations(
+  public _flattenTranslations(
     _translations: any,
     flatObj: {},
     keychain: string = ''
@@ -98,7 +123,7 @@ export class EditorComponent implements OnInit {
       const combinedKey = keychain != '' ? keychain + '.' + key : key;
 
       if (typeof _translations[key] === 'object') {
-        this.flattenTranslations(_translations[key], flatObj, combinedKey);
+        this._flattenTranslations(_translations[key], flatObj, combinedKey);
       } else {
         flatObj[combinedKey] = _translations[key];
       }

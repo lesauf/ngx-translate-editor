@@ -1,11 +1,28 @@
 <div class="center">
-  <span>Editor</span>
+  <!--<div *ngFor="let tKey of this.translationKeys; index as i">-->
+  <!--  {{ i }} - {{ tKey }} :-->
+  <!--  <div *ngFor="let lang of this.languages">-->
+  <!--    {{ lang }} : {{ this.translations[tKey][lang] }}-->
+  <!--  </div>-->
+  <!--  <hr>-->
+  <!--</div>-->
 
-  <div *ngFor="let tKey of this.translationKeys; index as i">
-    {{ i }} - {{ tKey }} :
-    <div *ngFor="let lang of this.languages">
-      {{ lang }} : {{ this.translations[tKey][lang] }}
+  <form [formGroup]="translationForm" (ngSubmit)="onSubmit(translationForm.value)">
+    <div *ngFor="let key of this.translationsKeys">
+      <label>
+        {{ key }}:
+      </label>
+      <div *ngFor="let lang of this.languages">
+        <div>
+          <label for="{{ lang }}.{{ key }}">
+            {{ lang }}.{{ key }}
+          </label>
+          <input id="{{ lang }}.{{ key }}" type="text" formControlName="{{ lang }}.{{ key }}">
+        </div>
+      </div>
     </div>
-    <hr>
-  </div>
+
+    <button class="button" type="submit">Save</button>
+
+  </form>
 </div>
