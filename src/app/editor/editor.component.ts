@@ -71,20 +71,13 @@ export class EditorComponent implements OnInit {
    *
    */
   ngOnInit() {
-    // Get the languages
-    // this.languages = Object.keys(this.translations);
-
-    // Convert the JSON translations to an iterable array for *ngFor to work
-
-    console.log('Lang:', this.languages);
-
+    // Flatten the translation object
     for (let lang in this.translations) {
-      // console.log(lang);
-      // console.log(this.translations);
-      // console.log(this.translations[lang]);
+      this.flatTranslations[lang] = {};
 
-      this.flatTranslations[lang] = this.flattenTranslations(
-        this.translations[lang]
+      this.flattenTranslations(
+        this.translations[lang],
+        this.flatTranslations[lang]
       );
     }
 
@@ -92,24 +85,23 @@ export class EditorComponent implements OnInit {
   }
 
   /**
-   * Recursive function to convert translations keys as point notation
+   * Recursive function to convert translations keys as dot notation
    * from the first language
    */
-  public flattenTranslations(_translations: any, keychain: string = '') {
-    let flatObj = {};
-
+  public flattenTranslations(
+    _translations: any,
+    flatObj: {},
+    keychain: string = ''
+  ) {
     for (let key in _translations) {
+      // Current key path as dot notation
       const combinedKey = keychain != '' ? keychain + '.' + key : key;
-      let value;
 
       if (typeof _translations[key] === 'object') {
-        value = this.flattenTranslations(_translations[key], combinedKey);
+        this.flattenTranslations(_translations[key], flatObj, combinedKey);
       } else {
-        value = _translations[key];
+        flatObj[combinedKey] = _translations[key];
       }
-      flatObj[combinedKey] = value;
     }
-
-    return flatObj;
   }
 }
