@@ -7,22 +7,24 @@
   <!--  <hr>-->
   <!--</div>-->
 
-  <form [formGroup]="translationForm" (ngSubmit)="onSubmit(translationForm.value)">
-    <div *ngFor="let key of this.translationsKeys">
-      <label>
-        {{ key }}:
-      </label>
+  <form
+    [formGroup]="translationForm"
+    (ngSubmit)="onSubmit(translationForm.value)"
+  >
+    <div *ngFor="let key of this.translationKeys">
+      <label> {{ key }}: </label>
       <div *ngFor="let lang of this.languages">
         <div>
-          <label for="{{ lang }}.{{ key }}">
-            {{ lang }}.{{ key }}
-          </label>
-          <input id="{{ lang }}.{{ key }}" type="text" formControlName="{{ lang }}.{{ key }}">
+          <label for="{{ lang }}.{{ key }}"> {{ lang }} </label>
+          <input
+            id="{{ lang }}.{{ key }}"
+            type="text"
+            [formControlName]="lang"
+          />
         </div>
       </div>
     </div>
 
     <button class="button" type="submit">Save</button>
-
   </form>
 </div>

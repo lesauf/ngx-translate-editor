@@ -63,7 +63,7 @@ export class EditorComponent implements OnInit {
 
   public translationKeys: string[];
 
-  public defaultLanguage: string = 'en';
+  public defaultLanguage = 'en';
 
   public translationForm;
 
@@ -72,13 +72,15 @@ export class EditorComponent implements OnInit {
     this.languages = Object.keys(this.translations);
 
     // Flatten the translation object
-    for (let lang in this.translations) {
-      this.flatTranslations[lang] = {};
+    for (const lang in this.translations) {
+      if (this.translations.hasOwnProperty(lang)) {
+        this.flatTranslations[lang] = {};
 
-      this._flattenTranslations(
-        this.translations[lang],
-        this.flatTranslations[lang]
-      );
+        this._flattenTranslations(
+          this.translations[lang],
+          this.flatTranslations[lang]
+        );
+      }
     }
 
     // Get the translations keys from the default language
@@ -87,7 +89,11 @@ export class EditorComponent implements OnInit {
     );
 
     // Build form
+
+    this.languages.forEach(lang => {});
     this.translationForm = this.formBuilder.group(this.flatTranslations);
+
+    console.log('form: ', this.translationForm);
   }
 
   /**
@@ -111,21 +117,32 @@ export class EditorComponent implements OnInit {
 
   /**
    * Recursive function to convert translations keys as dot notation
-   * from the first language
+   * from the first language.
+   * Also remove all the spaces from the keys
    */
   public _flattenTranslations(
-    _translations: any,
+    translationsToFlatten: any,
     flatObj: {},
     keychain: string = ''
   ) {
-    for (let key in _translations) {
-      // Current key path as dot notation
-      const combinedKey = keychain != '' ? keychain + '.' + key : key;
+    for (const key in translationsToFlatten) {
+      if (translationsToFlatten.hasOwnProperty(key)) {
+        // Remove spaces
+        const trimmedKey = key.replace(/ /g, '');
 
-      if (typeof _translations[key] === 'object') {
-        this._flattenTranslations(_translations[key], flatObj, combinedKey);
-      } else {
-        flatObj[combinedKey] = _translations[key];
+        // Current key path as dot notation
+        const combinedKey =
+          keychain !== '' ? keychain + '.' + trimmedKey : trimmedKey;
+
+        if (typeof translationsToFlatten[key] === 'object') {
+          this._flattenTranslations(
+            translationsToFlatten[key],
+            flatObj,
+            combinedKey
+          );
+        } else {
+          flatObj[combinedKey] = translationsToFlatten[key];
+        }
       }
     }
   }
