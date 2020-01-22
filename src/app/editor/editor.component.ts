@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-editor',
@@ -65,7 +65,7 @@ export class EditorComponent implements OnInit {
 
   public defaultLanguage = 'en';
 
-  public translationForm;
+  public translationForm: FormGroup = new FormGroup({});
 
   constructor(private formBuilder: FormBuilder) {
     // Get the languages from the translations
@@ -89,9 +89,18 @@ export class EditorComponent implements OnInit {
     );
 
     // Build form
+    for (const key of this.translationKeys) {
+      const keyForm = new FormGroup({});
 
-    this.languages.forEach(lang => {});
-    this.translationForm = this.formBuilder.group(this.flatTranslations);
+      for (const lang of this.languages) {
+        keyForm.addControl(
+          lang,
+          new FormControl(this.flatTranslations[lang][key])
+        );
+      }
+
+      this.translationForm.addControl(key, keyForm);
+    }
 
     console.log('form: ', this.translationForm);
   }
@@ -132,7 +141,7 @@ export class EditorComponent implements OnInit {
 
         // Current key path as dot notation
         const combinedKey =
-          keychain !== '' ? keychain + '.' + trimmedKey : trimmedKey;
+          keychain !== '' ? keychain + '_' + trimmedKey : trimmedKey;
 
         if (typeof translationsToFlatten[key] === 'object') {
           this._flattenTranslations(
