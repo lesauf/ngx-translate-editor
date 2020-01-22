@@ -1,11 +1,21 @@
-<div class="center">
-  <form [formGroup]="translationForm" (ngSubmit)="onSubmit(translationForm.value)">
-    <div *ngFor="let key of this.translationKeys">
-      <label> {{ key }}: </label>
+<div class="center" *ngIf="translationKeys">
+  <form
+    [formGroup]="translationForm"
+    (ngSubmit)="onSubmit(translationForm.value)"
+  >
+    <div
+      *ngFor="let key of this.translationKeys"
+      [formGroup]="translationForm.get([key])"
+    >
+      <label> {{ key }} : </label>
       <div *ngFor="let lang of this.languages">
         <div>
-          <label for="{{ lang }}.{{ key }}"> {{ lang }}.{{ key }} </label>
-          <input id="{{ lang }}.{{ key }}" type="text" [formControl]="key.lang" />
+          <label for="{{ lang }}.{{ key }}"> {{ lang }} </label>
+          <input
+            id="{{ lang }}.{{ key }}"
+            type="text"
+            [formControl]="translationForm.get([key, lang])"
+          />
         </div>
       </div>
     </div>

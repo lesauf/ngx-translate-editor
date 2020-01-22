@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import * as flat from 'flat';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-editor',
@@ -7,14 +9,6 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./editor.component.css']
 })
 export class EditorComponent implements OnInit {
-  /**
-   * Path to i18n files folder
-   *
-   * @name translationsFolder
-   * @type string
-   */
-  @Input() translationsFolder = '../../assets/i18n';
-
   /**
    * List of languages
    */
@@ -59,58 +53,81 @@ export class EditorComponent implements OnInit {
     }
   };
 
-  public flatTranslations = {};
-
-  public translationKeys: string[];
-
-  public defaultLanguage = 'en';
-
+  /**
+   * TranslationForm
+   *
+   * @type FormGroup
+   */
   public translationForm: FormGroup = new FormGroup({});
 
-  constructor(private formBuilder: FormBuilder) {
-    // Get the languages from the translations
-    this.languages = Object.keys(this.translations);
+  /**
+   * Translations key used by Ngx-translate.
+   * They are retrieved from the default language
+   * and synchronized to all the others
+   *
+   * @name translationKeys
+   * @type string[]
+   */
+  translationKeys: string[];
 
-    // Flatten the translation object
+  /**
+   * Default language
+   * It is the one appearing first in the form,
+   * and also the one defining the translation keys
+   */
+  defaultLanguage = 'en';
+
+  /**
+   * Delimiter to use between subkeys when flattening
+   * and unflattening the translations
+   *
+   * @name delimiter
+   * @type string
+   */
+  delimiter = '.';
+
+  constructor(private formBuilder: FormBuilder) {
+    // First make the sure the default language exist
+    if (!this.translations.hasOwnProperty(this.defaultLanguage)) {
+      this.defaultLanguage = Object.keys(this.translations)[0];
+    }
+
+    // Get the languages from the translations, making sure the default come first
+    this.languages = _.union(
+      [this.defaultLanguage],
+      Object.keys(this.translations)
+    );
+
+    // Flatten the translation object to easily get all the translations keys
+    const flatTranslations = {};
     for (const lang in this.translations) {
       if (this.translations.hasOwnProperty(lang)) {
-        this.flatTranslations[lang] = {};
-
-        this._flattenTranslations(
-          this.translations[lang],
-          this.flatTranslations[lang]
-        );
+        flatTranslations[lang] = flat(this.translations[lang], {
+          delimiter: this.delimiter
+        });
       }
     }
 
     // Get the translations keys from the default language
-    this.translationKeys = Object.keys(
-      this.flatTranslations[this.defaultLanguage]
-    );
+    // They will be applied to the other languages
+    this.translationKeys = Object.keys(flatTranslations[this.defaultLanguage]);
 
     // Build form
     for (const key of this.translationKeys) {
       const keyForm = new FormGroup({});
 
       for (const lang of this.languages) {
-        keyForm.addControl(
-          lang,
-          new FormControl(this.flatTranslations[lang][key])
-        );
+        keyForm.addControl(lang, new FormControl(flatTranslations[lang][key]));
       }
 
       this.translationForm.addControl(key, keyForm);
     }
-
-    console.log('form: ', this.translationForm);
   }
 
   /**
    *
    */
-  ngOnInit() {
-    console.log('Flat: ', this.flatTranslations);
-  }
+  ngOnInit() {}
 
   /**
    * Save translations
@@ -119,40 +136,30 @@ export class EditorComponent implements OnInit {
    */
   onSubmit(translationData) {
     // Process translations data here
-    console.warn('Translations saved', translationData);
-
-    this.translationForm.reset();
+    console.warn(
+      'Translations to be saved',
+      this.convertTranslationsToNgxLayout()
+    );
   }
 
   /**
-   * Recursive function to convert translations keys as dot notation
-   * from the first language.
-   * Also remove all the spaces from the keys
+   * Convert back the translations to the original nested
+   * objects format
    */
-  public _flattenTranslations(
-    translationsToFlatten: any,
-    flatObj: {},
-    keychain: string = ''
-  ) {
-    for (const key in translationsToFlatten) {
-      if (translationsToFlatten.hasOwnProperty(key)) {
-        // Remove spaces
-        const trimmedKey = key.replace(/ /g, '');
+  convertTranslationsToNgxLayout() {
+    const formValues = this.translationForm.value;
 
-        // Current key path as dot notation
-        const combinedKey =
-          keychain !== '' ? keychain + '_' + trimmedKey : trimmedKey;
+    const ngxLayout = {};
 
-        if (typeof translationsToFlatten[key] === 'object') {
-          this._flattenTranslations(
-            translationsToFlatten[key],
-            flatObj,
-            combinedKey
-          );
-        } else {
-          flatObj[combinedKey] = translationsToFlatten[key];
+    for (const key of this.translationKeys) {
+      for (const lang of this.languages) {
+        if (!ngxLayout.hasOwnProperty(lang)) {
+          ngxLayout[lang] = {};
         }
+        ngxLayout[lang][key] = formValues[key][lang];
       }
     }
+
+    return flat.unflatten(ngxLayout, { delimiter: this.delimiter });
   }
 }
