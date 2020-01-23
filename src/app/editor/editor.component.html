@@ -1,8 +1,5 @@
 <div class="center" *ngIf="translationKeys">
-  <form
-    [formGroup]="translationForm"
-    (ngSubmit)="onSubmit(translationForm.value)"
-  >
+  <form [formGroup]="translationForm" (ngSubmit)="onSubmit()">
     <div
       *ngFor="let key of this.translationKeys"
       [formGroup]="translationForm.get([key])"

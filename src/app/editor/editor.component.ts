@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import * as flat from 'flat';
 import * as _ from 'lodash';
 
@@ -86,7 +86,7 @@ export class EditorComponent implements OnInit {
    */
   delimiter = '.';
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
     // First make the sure the default language exist
     if (!this.translations.hasOwnProperty(this.defaultLanguage)) {
       this.defaultLanguage = Object.keys(this.translations)[0];
@@ -132,9 +132,10 @@ export class EditorComponent implements OnInit {
   /**
    * Save translations
    *
-   * @param translationData form data
    */
-  onSubmit(translationData) {
+  onSubmit() {
+    const translationData = this.translationForm.value;
+
     // Process translations data here
     console.warn(
       'Translations to be saved',
