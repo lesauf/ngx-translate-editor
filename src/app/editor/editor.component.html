@@ -1,22 +1,43 @@
 <div class="center" *ngIf="translationKeys">
-  <form [formGroup]="translationForm" (ngSubmit)="onSubmit()">
+  <form
+    [formGroup]="translationForm"
+    (ngSubmit)="onSubmit()"
+    fxLayout="row wrap"
+    fxLayoutAlign="center start"
+  >
     <div
       *ngFor="let key of this.translationKeys"
       [formGroup]="translationForm.get([key])"
+      fxFlex="90"
+      fxLayout="column"
+      fxLayoutAlign="space-around center"
+      fxLayoutGap="5px"
     >
-      <label> {{ key }} : </label>
-      <div *ngFor="let lang of this.languages">
-        <div>
-          <label for="{{ lang }}.{{ key }}"> {{ lang }} </label>
-          <input
+      <!-- Spacing -->
+      <div fxFlex></div>
+      <!-- Translation key -->
+      <label fxFlex fxFlexAlign="start"> {{ key }} : </label>
+      <div
+        *ngFor="let lang of this.languages"
+        fxFlex
+        fxFill
+        fxLayout="row wrap"
+        fxLayoutAlign="space-between center"
+      >
+        <div fxFlex="95" fxFlexOffset="5" fxLayout="row">
+          <label for="{{ lang }}.{{ key }}" fxFlex="5" fxFlexAlign="right">
+            {{ lang }}
+          </label>
+          <textarea
             id="{{ lang }}.{{ key }}"
             type="text"
             [formControl]="translationForm.get([key, lang])"
-          />
+            fxFlex="95"
+          ></textarea>
         </div>
       </div>
     </div>
 
-    <button class="button" type="submit">Save</button>
+    <button class="button" type="submit" fxFlex="20">Save</button>
   </form>
 </div>

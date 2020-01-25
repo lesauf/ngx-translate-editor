@@ -10,17 +10,13 @@ import * as _ from 'lodash';
 })
 export class EditorComponent implements OnInit {
   /**
-   * List of languages
-   */
-  public languages: string[];
-
-  /**
    * Object containing the translations for each language,
    * combined in the keys
    *
    * @name translations
    */
-  public translations = {
+  @Input()
+  translations = {
     en: {
       'A - Z': 'A - Z',
       'Christian Life': 'Christian Life',
@@ -54,6 +50,11 @@ export class EditorComponent implements OnInit {
   };
 
   /**
+   * List of languages
+   */
+  public languages: string[];
+
+  /**
    * TranslationForm
    *
    * @type FormGroup
@@ -84,7 +85,7 @@ export class EditorComponent implements OnInit {
    * @name delimiter
    * @type string
    */
-  delimiter = '.';
+  delimiter = '->';
 
   constructor() {
     // First make the sure the default language exist
