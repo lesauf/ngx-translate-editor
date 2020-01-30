@@ -5,12 +5,8 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [RouterTestingModule],
+      declarations: [AppComponent]
     }).compileComponents();
   }));
 
@@ -20,16 +16,18 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'ngx-translate-editor'`, () => {
+  it(`should have as title 'Ngx Translate Editor'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('ngx-translate-editor');
+    expect(app.title).toEqual('Ngx Translate Editor');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content h1').textContent).toContain('ngx-translate-editor app is running!');
+    expect(compiled.querySelector('.content h1').textContent).toContain(
+      'Ngx Translate Editor'
+    );
   });
 });
