@@ -1,7 +1,7 @@
-import express from 'express';
+const express = require('express');
 import { routes } from './routes';
 
-const app = express();
+export const app = express();
 
 // Allow any method from any host and log requests
 app.use((req: any, res: any, next: any) => {

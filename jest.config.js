@@ -1,7 +1,9 @@
-const { defaults } = require("jest-config");
+const { defaults } = require('jest-config');
 
 module.exports = {
   collectCoverage: true,
-  collectCoverageFrom: ["src/**/*.ts"],
+  collectCoverageFrom: ['src/**/*.ts', 'server/**/*.ts'],
   verbose: true,
+  testEnvironment: 'jsdom',
+  coveragePathIgnorePatterns: ['/node_modules/', '/server//node_modules/']
 };
