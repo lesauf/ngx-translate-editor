@@ -65,6 +65,7 @@
     "jest": "^25.1.0",
     "protractor": "~5.4.0",
     "supertest": "^4.0.2",
+    "ts-jest": "^25.2.1",
     "ts-node-dev": "^1.0.0-pre.44"
   }
 }
