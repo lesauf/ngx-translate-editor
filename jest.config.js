@@ -5,5 +5,5 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.ts', 'server/**/*.ts'],
   verbose: true,
   testEnvironment: 'jsdom',
-  coveragePathIgnorePatterns: ['/node_modules/', '/server//node_modules/']
+  coveragePathIgnorePatterns: ['/node_modules/']
 };
