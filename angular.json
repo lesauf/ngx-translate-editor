@@ -122,5 +122,8 @@
       }
     }
   },
-  "defaultProject": "ngx-translate-editor"
+  "defaultProject": "ngx-translate-editor",
+  "cli": {
+    "analytics": false
+  }
 }

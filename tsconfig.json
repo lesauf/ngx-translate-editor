@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
-  "compilerOptions": {
+  "compilerOptions":
+  {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -15,7 +16,8 @@
     "types": ["node", "jest"],
     "lib": ["es2018", "dom"]
   },
-  "angularCompilerOptions": {
+  "angularCompilerOptions":
+  {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
   }
