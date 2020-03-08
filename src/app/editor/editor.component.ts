@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import * as flat from 'flat';
 import * as _ from 'lodash';
+import { EditorService } from './editor.service';
 
 @Component({
   selector: 'app-editor',
@@ -87,7 +88,7 @@ export class EditorComponent implements OnInit {
    */
   delimiter = '->';
 
-  constructor() {
+  constructor(private editorService: EditorService) {
     // First make the sure the default language exist
     if (!this.translations.hasOwnProperty(this.defaultLanguage)) {
       this.defaultLanguage = Object.keys(this.translations)[0];
@@ -137,11 +138,14 @@ export class EditorComponent implements OnInit {
   onSubmit() {
     const translationData = this.translationForm.value;
 
-    // Process translations data here
-    console.warn(
-      'Translations to be saved',
-      this.convertTranslationsToNgxLayout()
-    );
+    // Save processed translations data here
+    this.editorService
+      .saveTranslations(this.convertTranslationsToNgxLayout())
+      .then(() => {});
+    // console.warn(
+    //   'Translations to be saved',
+    //   this.convertTranslationsToNgxLayout()
+    // );
   }
 
   /**

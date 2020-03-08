@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 // import * as express from 'express';
 // import express = require('express');
@@ -25,7 +26,15 @@ app.use((req: any, res: any, next: any) => {
 // Handle POST requests that come in formatted as JSON
 app.use(express.json());
 
-app.use('/', routes);
+// Choose what fronten framework to serve the dist from
+const distDir = '../dist/';
+// For any request not on api, serve the frontend
+app.use(express.static(path.join(__dirname, distDir)));
+app.use(/^((?!(api)).)*/, (req, res) => {
+  res.sendFile(path.join(__dirname, distDir + '/index.html'));
+});
+// For api request serve the server
+app.use('/api/', routes);
 
 // start our server on port 4201
 app.listen(4201, '127.0.0.1', function() {
