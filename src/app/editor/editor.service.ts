@@ -23,7 +23,7 @@ export class EditorService {
    * Fetch translations from the server
    */
   getTranslations() {
-    return this.http.get('api/get-translations');
+    return this.http.get('api/translations').toPromise();
   }
 
   /**
@@ -38,9 +38,9 @@ export class EditorService {
     };
     console.log('Saving ...');
 
-    return this.http.get('api/get-translations').toPromise();
+    return this.http.get('api/translations').toPromise();
     // return this.http
-    //   .post('api/save-translations', translations, httpOptions)
+    //   .post('api/translations', translations, httpOptions)
     //   .pipe(catchError(this.handleError('saveTranslations')));
   }
 }

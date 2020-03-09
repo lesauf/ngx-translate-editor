@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import * as flat from 'flat';
 import * as _ from 'lodash';
+
 import { EditorService } from './editor.service';
 
 @Component({
@@ -17,38 +18,7 @@ export class EditorComponent implements OnInit {
    * @name translations
    */
   @Input()
-  translations = {
-    en: {
-      'A - Z': 'A - Z',
-      'Christian Life': 'Christian Life',
-      'Christian Life and Ministry': 'Christian Life and Ministry',
-      clm: {
-        chairman: 'CLM - Chairman',
-        christianLiving: {
-          'congregation-bible-study': 'Congregation Bible Study',
-          'first-part': 'First Part',
-          'second-part': 'Second Part',
-          'third-part': 'Third Part',
-          title: 'Christian Life Title'
-        }
-      }
-    },
-    fr: {
-      'A - Z': 'A - Z',
-      'Christian Life': 'Vie Chretienne',
-      'Christian Life and Ministry': 'Vie Chretienne et Ministere',
-      clm: {
-        chairman: 'VCM - President',
-        christianLiving: {
-          'congregation-bible-study': "Etude biblique de l'assemblée",
-          'first-part': 'Premiere partie',
-          'second-part': 'Deuxieme partie',
-          'third-part': 'Troisieme partie',
-          title: 'Title Vie Chretienne'
-        }
-      }
-    }
-  };
+  translations;
 
   /**
    * List of languages
@@ -88,7 +58,15 @@ export class EditorComponent implements OnInit {
    */
   delimiter = '->';
 
-  constructor(private editorService: EditorService) {
+  constructor(private editorService: EditorService) {}
+
+  /**
+   *
+   */
+  async ngOnInit() {
+    this.translations = await this.editorService.getTranslations();
+    console.log(this.translations);
+
     // First make the sure the default language exist
     if (!this.translations.hasOwnProperty(this.defaultLanguage)) {
       this.defaultLanguage = Object.keys(this.translations)[0];
@@ -125,11 +103,6 @@ export class EditorComponent implements OnInit {
       this.translationForm.addControl(key, keyForm);
     }
   }
-
-  /**
-   *
-   */
-  ngOnInit() {}
 
   /**
    * Save translations

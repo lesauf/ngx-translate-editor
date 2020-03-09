@@ -3,7 +3,7 @@ const express = require('express');
 // import * as express from 'express';
 // import express = require('express');
 
-import { routes } from './routes';
+import { router } from './routes';
 
 export const app = express();
 
@@ -33,8 +33,8 @@ app.use(express.static(path.join(__dirname, distDir)));
 app.use(/^((?!(api)).)*/, (req, res) => {
   res.sendFile(path.join(__dirname, distDir + '/index.html'));
 });
-// For api request serve the server
-app.use('/api/', routes);
+// For api request, serve the server
+app.use('/api/', router);
 
 // start our server on port 4201
 app.listen(4201, '127.0.0.1', function() {
