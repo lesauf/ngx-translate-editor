@@ -1,39 +1,64 @@
-import { async } from '@angular/core/testing';
-import { Injectable } from '@angular/core';
-import { Observable, of as observableOf, throwError } from 'rxjs';
-
+import {
+  createHttpFactory,
+  HttpMethod,
+  SpectatorHttp
+} from '@ngneat/spectator/jest';
 import { EditorService } from './editor.service';
-import { HttpClient } from '@angular/common/http';
+import { createServiceFactory } from '@ngneat/spectator';
 import { HttpErrorHandler } from '../http-error-handler.service';
 
-jest.mock('@angular/common/http');
-
-@Injectable()
-class MockHttpErrorHandler {
-  createHandleError = function() {};
-}
-
 describe('EditorService', () => {
-  let service;
+  let editorServiceSpectator: SpectatorHttp<EditorService>;
+  const createHttp = createHttpFactory({
+    service: EditorService,
+    mocks: [HttpErrorHandler]
+  });
 
   beforeEach(() => {
-    let httpClient = new HttpClient(null);
-    service = new EditorService(httpClient, {
-      createHandleError: function() {}
+    editorServiceSpectator = createHttp();
+  });
+
+  it('should be created', () => {
+    expect(editorServiceSpectator.service).toBeTruthy();
+  });
+
+  describe('#getTranslations', () => {
+    it('fetch translations from server', () => {
+      editorServiceSpectator.service.getTranslations();
+      const req = editorServiceSpectator.expectOne(
+        'api/translations',
+        HttpMethod.GET
+      );
     });
   });
 
-  it('should run #getTranslations()', async () => {
-    service.http = service.http || {};
-    service.http.get = jest.fn().mockReturnValue(observableOf({}));
-    service.getTranslations();
-    // expect(service.http.get).toHaveBeenCalled();
-  });
+  // it('can test HttpClient.post', () => {
+  //   editorServiceSpectator.service.postTodo(1).subscribe();
 
-  it('should run #saveTranslations()', async () => {
-    service.http = service.http || {};
-    service.http.get = jest.fn().mockReturnValue(observableOf({}));
-    service.saveTranslations({});
-    // expect(service.http.get).toHaveBeenCalled();
-  });
+  //   const req = spectator.expectOne('api/todos', HttpMethod.POST);
+  //   expect(req.request.body['id']).toEqual(1);
+  // });
+
+  // it('can test current http requests', () => {
+  //   spectator.service.getTodos().subscribe();
+  //   const reqs = spectator.expectConcurrent([
+  //     { url: '/api1/todos', method: HttpMethod.GET },
+  //     { URL: '/api2/todos', method: HttpMethod.GET }
+  //   ]);
+
+  //   spectator.flushAll(reqs, [{}, {}, {}]);
+  // });
 });
+
+// describe('getTranslations', () => {
+//   it('makes expected calls', () => {
+//     const httpTestingController = TestBed.inject(HttpTestingController);
+//     service.getTranslations().then(res => {
+//       expect(res).toEqual(null);
+//     });
+//     const req = httpTestingController.expectOne('api/translations');
+//     expect(req.request.method).toEqual('GET');
+//     req.flush({});
+//     httpTestingController.verify();
+//   });
+// });

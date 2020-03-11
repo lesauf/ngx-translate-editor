@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import * as flat from 'flat';
+const flatten = require('flat');
 import * as _ from 'lodash';
 
 import { EditorService } from './editor.service';
@@ -82,7 +82,7 @@ export class EditorComponent implements OnInit {
     const flatTranslations = {};
     for (const lang in this.translations) {
       if (this.translations.hasOwnProperty(lang)) {
-        flatTranslations[lang] = flat(this.translations[lang], {
+        flatTranslations[lang] = flatten(this.translations[lang], {
           delimiter: this.delimiter
         });
       }
@@ -139,6 +139,6 @@ export class EditorComponent implements OnInit {
       }
     }
 
-    return flat.unflatten(ngxLayout, { delimiter: this.delimiter });
+    return flatten.unflatten(ngxLayout, { delimiter: this.delimiter });
   }
 }
