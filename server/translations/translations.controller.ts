@@ -1,5 +1,3 @@
-import { FSWatcher } from 'fs';
-
 const fs = require('fs').promises;
 
 /**
@@ -17,13 +15,13 @@ export class TranslationsController {
   static async getTranslations(req: any, res: any) {
     let translations: Object = {};
 
-    const files: String[] | Buffer[] | fs.Dirent[] = await fs.readdir(
+    const files: string[] = await fs.readdir(
       TranslationsController.translationsFolder
     );
 
     // Read dir
     for (let filename of files) {
-      const file: String = TranslationsController.translationsFolder + filename;
+      const file: string = TranslationsController.translationsFolder + filename;
       // Only JSON files
       const extension = filename.substring(filename.indexOf('.') + 1);
 
@@ -31,15 +29,12 @@ export class TranslationsController {
         const lang = filename.substring(0, filename.indexOf('.'));
 
         // Check if file is readable
-        const fileStats: fs.Stats = await fs.stat(file);
+        const fileStats = await fs.stat(file);
         if (!(fileStats.mode | fs.S_IRWXO)) {
           throw 'File Not Readable';
         }
 
-        const content: String | Buffer | fs.Dirent = await fs.readFile(
-          file,
-          'utf8'
-        );
+        const content: string = await fs.readFile(file, 'utf8');
         // console.log(content);
 
         translations[lang] = JSON.parse(content);

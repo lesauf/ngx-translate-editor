@@ -9,6 +9,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
+import { EditorService } from './editor/editor.service';
 import { HttpErrorHandler } from './http-error-handler.service';
 import { MessageService } from './message.service';
 import { MessagesComponent } from './messages/messages.component';
@@ -27,6 +28,7 @@ import { MessagesComponent } from './messages/messages.component';
   providers: [
     { provide: APP_BASE_HREF, useValue: '/' },
     HttpErrorHandler,
+    EditorService,
     MessageService
   ],
   bootstrap: [AppComponent]

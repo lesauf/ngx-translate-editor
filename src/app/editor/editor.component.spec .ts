@@ -1,22 +1,33 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { of } from 'rxjs';
 
 import { EditorComponent } from './editor.component';
+import { EditorService } from './editor.service';
 
 describe('EditorComponent', () => {
+  let editorService: EditorService;
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EditorComponent],
-      imports: [FormsModule, ReactiveFormsModule]
+      imports: [FormsModule, ReactiveFormsModule],
+      providers: [
+        {
+          provide: EditorService,
+          useValue: { getTranslations: () => of({}).toPromise() }
+        }
+      ]
     }).compileComponents();
-  }));
+    // }));
 
-  beforeEach(() => {
+    // beforeEach(() => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
+    editorService = TestBed.get(EditorService);
+
     // Mock translations
     component.translations = {
       en: {
@@ -52,7 +63,7 @@ describe('EditorComponent', () => {
     };
 
     fixture.detectChanges();
-  });
+  }));
 
   it('should exist', () => {
     expect(component).toBeTruthy();
