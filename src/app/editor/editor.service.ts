@@ -4,7 +4,7 @@ import {
   HttpErrorResponse,
   HttpHeaders
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
@@ -23,7 +23,19 @@ export class EditorService {
    * Fetch translations from the server
    */
   getTranslations() {
-    return this.http.get('api/translations').toPromise();
+    let translationsObs: Observable<any>;
+    if (window.localStorage.getItem('translations') !== undefined) {
+      console.log('Fetching translations from local storage');
+
+      translationsObs = of(
+        JSON.parse(window.localStorage.getItem('translations'))
+      );
+    } else {
+      console.log('Fetching translations from server');
+
+      translationsObs = this.http.get('api/translations');
+    }
+    return translationsObs.toPromise();
   }
 
   /**

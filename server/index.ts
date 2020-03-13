@@ -37,6 +37,6 @@ app.use(/^((?!(api)).)*/, (req, res) => {
 app.use('/api/', router);
 
 // start our server on port 4201
-app.listen(4201, '127.0.0.1', function() {
-  console.log('Server now listening on 4201');
+app.listen(8080, '127.0.0.1', function() {
+  console.log('Server now listening on 8080');
 });

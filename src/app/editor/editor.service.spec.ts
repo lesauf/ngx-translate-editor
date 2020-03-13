@@ -1,10 +1,11 @@
 import {
   createHttpFactory,
+  createServiceFactory,
   HttpMethod,
   SpectatorHttp
 } from '@ngneat/spectator/jest';
+
 import { EditorService } from './editor.service';
-import { createServiceFactory } from '@ngneat/spectator';
 import { HttpErrorHandler } from '../http-error-handler.service';
 
 describe('EditorService', () => {
@@ -23,12 +24,14 @@ describe('EditorService', () => {
   });
 
   describe('#getTranslations', () => {
-    it('fetch translations from server', () => {
+    it('fetch translations from server if local storage empty', () => {
       editorServiceSpectator.service.getTranslations();
-      const req = editorServiceSpectator.expectOne(
-        'api/translations',
-        HttpMethod.GET
-      );
+      if (window.localStorage.getItem('translations') !== undefined) {
+        const jsonParse = spyOn(JSON, 'parse');
+        expect(jsonParse).toHaveBeenCalled();
+      } else {
+        editorServiceSpectator.expectOne('api/translations', HttpMethod.GET);
+      }
     });
   });
 

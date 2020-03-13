@@ -1,10 +1,11 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { tap } from 'rxjs/operators';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,25 @@ import { EditorService } from './editor/editor.service';
 import { HttpErrorHandler } from './http-error-handler.service';
 import { MessageService } from './message.service';
 import { MessagesComponent } from './messages/messages.component';
+
+// Get translations first
+export function getTranslations(http: HttpClient) {
+  return function() {
+    // todo use EditorService
+    return http
+      .get('api/translations')
+      .pipe(
+        // Save them in the local storage
+        tap(translations =>
+          window.localStorage.setItem(
+            'translations',
+            JSON.stringify(translations)
+          )
+        )
+      )
+      .toPromise();
+  };
+}
 
 @NgModule({
   declarations: [AppComponent, EditorComponent, MessagesComponent],
@@ -27,6 +47,12 @@ import { MessagesComponent } from './messages/messages.component';
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: '/' },
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [HttpClient],
+      useFactory: getTranslations
+    },
     HttpErrorHandler,
     EditorService,
     MessageService
