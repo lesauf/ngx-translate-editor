@@ -50,9 +50,12 @@ export class EditorService {
     };
     console.log('Saving ...');
 
-    return this.http.get('api/translations').toPromise();
-    // return this.http
-    //   .post('api/translations', translations, httpOptions)
-    //   .pipe(catchError(this.handleError('saveTranslations')));
+    // return this.http.post('api/translations').toPromise();
+    return (
+      this.http
+        .post('api/translations', translations, httpOptions)
+        // .pipe(catchError(this.handleError('saveTranslations')))
+        .toPromise()
+    );
   }
 }

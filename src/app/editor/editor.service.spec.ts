@@ -24,14 +24,29 @@ describe('EditorService', () => {
   });
 
   describe('#getTranslations', () => {
-    it('fetch translations from server if local storage empty', () => {
+    it('should fetch translations from server if local storage empty', () => {
+      const jsonParse = spyOn(JSON, 'parse');
       editorServiceSpectator.service.getTranslations();
+
       if (window.localStorage.getItem('translations') !== undefined) {
-        const jsonParse = spyOn(JSON, 'parse');
         expect(jsonParse).toHaveBeenCalled();
       } else {
         editorServiceSpectator.expectOne('api/translations', HttpMethod.GET);
       }
+    });
+  });
+
+  describe('#saveTranslations', () => {
+    it('should post translations to the server', () => {
+      const jsonParse = spyOn(JSON, 'parse');
+      const mockTranslations = { fr: 'vide', en: 'dummy' };
+      editorServiceSpectator.service.saveTranslations(mockTranslations);
+
+      const req = editorServiceSpectator.expectOne(
+        'api/translations',
+        HttpMethod.POST
+      );
+      expect(req.request.body['fr']).toEqual('vide');
     });
   });
 
