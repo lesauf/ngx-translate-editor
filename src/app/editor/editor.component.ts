@@ -65,7 +65,7 @@ export class EditorComponent implements OnInit {
    */
   async ngOnInit() {
     this.translations = await this.editorService.getTranslations();
-    console.log(this.translations);
+    console.log('Translations: ', this.translations);
 
     // First make the sure the default language exist
     if (!this.translations.hasOwnProperty(this.defaultLanguage)) {
