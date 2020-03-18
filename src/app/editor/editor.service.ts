@@ -24,11 +24,11 @@ export class EditorService {
    */
   getTranslations() {
     let translationsObs: Observable<any>;
-    if (window.localStorage.getItem('translations') !== undefined) {
-      console.log('Fetching translations from local storage');
+    if (window.sessionStorage.getItem('translations') !== undefined) {
+      console.log('Fetching translations from session storage');
 
       translationsObs = of(
-        JSON.parse(window.localStorage.getItem('translations'))
+        JSON.parse(window.sessionStorage.getItem('translations'))
       );
     } else {
       console.log('Fetching translations from server');
@@ -49,7 +49,13 @@ export class EditorService {
       })
     };
     console.log('Saving ...');
-
+    
+    // Store the translations to the session storage
+    window.sessionStorage.setItem(
+      'translations',
+      JSON.stringify(translations)
+    );
+          
     // return this.http.post('api/translations').toPromise();
     return (
       this.http

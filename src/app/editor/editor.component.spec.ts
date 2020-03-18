@@ -128,7 +128,8 @@ describe('EditorComponent', () => {
     spyOn(
       editorComponentSpectator.component,
       'convertTranslationsToNgxLayout'
-    ).and.callThrough();
+    );
+    // .and.callThrough();
     spyOn(editorComponentSpectator.component, 'onSubmit').and.callThrough();
 
     editorComponentSpectator.component.onSubmit();

@@ -11,6 +11,16 @@ body {
   background: gray;
 }
 
+/* Center the loading gif*/
+
+#loading-gif {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
 input[type="text"],
 textarea {
   background: lightgray;

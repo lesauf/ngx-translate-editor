@@ -24,11 +24,11 @@ describe('EditorService', () => {
   });
 
   describe('#getTranslations', () => {
-    it('should fetch translations from server if local storage empty', () => {
+    it('should fetch translations from server if session storage empty', () => {
       const jsonParse = spyOn(JSON, 'parse');
       editorServiceSpectator.service.getTranslations();
 
-      if (window.localStorage.getItem('translations') !== undefined) {
+      if (window.sessionStorage.getItem('translations') !== undefined) {
         expect(jsonParse).toHaveBeenCalled();
       } else {
         editorServiceSpectator.expectOne('api/translations', HttpMethod.GET);
