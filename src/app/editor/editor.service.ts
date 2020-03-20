@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders
-} from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
+import { ApiService } from '../core/services/api.service';
+import {
+  HttpErrorHandler,
+  HandleError
+} from '../core/services/http-error-handler.service';
+import { Translations } from '../core/translation';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,10 @@ import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
 export class EditorService {
   private handleError: HandleError;
 
-  constructor(private http: HttpClient, httpErrorHandler: HttpErrorHandler) {
+  constructor(
+    private apiService: ApiService,
+    httpErrorHandler: HttpErrorHandler
+  ) {
     this.handleError = httpErrorHandler.createHandleError('EditorService');
   }
 
@@ -23,45 +27,33 @@ export class EditorService {
    * Fetch translations from the server
    */
   getTranslations() {
-    let translationsObs: Observable<any>;
+    let translationsPromise: Promise<Translations>;
+
     if (window.sessionStorage.getItem('translations') !== undefined) {
       console.log('Fetching translations from session storage');
 
-      translationsObs = of(
+      translationsPromise = new Promise(
         JSON.parse(window.sessionStorage.getItem('translations'))
       );
     } else {
       console.log('Fetching translations from server');
 
-      translationsObs = this.http.get('api/translations');
+      translationsPromise = this.apiService.getTranslations();
     }
-    return translationsObs.toPromise();
+    return translationsPromise;
   }
 
   /**
    * Send translated text to the server for saving on json files
    * @param translations
    */
-  saveTranslations(translations): Promise<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
+  saveTranslations(translations): Promise<Translations> {
     console.log('Saving ...');
-    
+
     // Store the translations to the session storage
-    window.sessionStorage.setItem(
-      'translations',
-      JSON.stringify(translations)
-    );
-          
+    window.sessionStorage.setItem('translations', JSON.stringify(translations));
+
     // return this.http.post('api/translations').toPromise();
-    return (
-      this.http
-        .post('api/translations', translations, httpOptions)
-        // .pipe(catchError(this.handleError('saveTranslations')))
-        .toPromise()
-    );
+    return this.apiService.createTranslations(translations);
   }
 }

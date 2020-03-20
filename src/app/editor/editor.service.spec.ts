@@ -6,7 +6,7 @@ import {
 } from '@ngneat/spectator/jest';
 
 import { EditorService } from './editor.service';
-import { HttpErrorHandler } from '../http-error-handler.service';
+import { HttpErrorHandler } from '../core/services/http-error-handler.service';
 
 describe('EditorService', () => {
   let editorServiceSpectator: SpectatorHttp<EditorService>;

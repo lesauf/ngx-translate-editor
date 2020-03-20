@@ -54,7 +54,7 @@ describe('EditorComponent', () => {
         useValue: {
           getTranslations: () => of(mockTranslations).toPromise(),
           saveTranslations: (translations: any) =>
-            of(mockTranslations).toPromise()
+            of({ message: 'Translations saved successfully' }).toPromise()
         }
       }
     ]
@@ -104,10 +104,7 @@ describe('EditorComponent', () => {
   });
 
   it('should convert back the translations to Ngx form on submit', () => {
-    spyOn(
-      editorComponentSpectator.component,
-      'convertTranslationsToNgxLayout'
-    );
+    spyOn(editorComponentSpectator.component, 'convertTranslationsToNgxLayout');
     // .and.callThrough();
     spyOn(editorComponentSpectator.component, 'onSubmit').and.callThrough();
 

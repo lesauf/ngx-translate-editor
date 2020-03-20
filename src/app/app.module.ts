@@ -11,8 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
 import { EditorService } from './editor/editor.service';
-import { HttpErrorHandler } from './http-error-handler.service';
-import { MessageService } from './message.service';
+import { HttpErrorHandler } from './core/services/http-error-handler.service';
+import { MessageService } from './core/services/message.service';
 import { MessagesComponent } from './messages/messages.component';
 
 // Get translations first
