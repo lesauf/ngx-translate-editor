@@ -16,5 +16,5 @@ router
     return await TranslationsController.getTranslations(req, res);
   })
   .post(async (req: any, res: any, next: any) => {
-    return await TranslationsController.saveTranslations(req, res, next);
+    return await TranslationsController.saveTranslations(req.body, res, next);
   });

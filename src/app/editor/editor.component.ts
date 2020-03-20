@@ -59,10 +59,6 @@ export class EditorComponent implements OnInit {
   delimiter = '->';
 
   constructor(private editorService: EditorService) {}
-
-  /**
-   *
-   */
   async ngOnInit() {
     this.translations = await this.editorService.getTranslations();
     // console.log('Translations: ', this.translations);
@@ -114,11 +110,9 @@ export class EditorComponent implements OnInit {
     // Save processed translations data here
     this.editorService
       .saveTranslations(this.convertTranslationsToNgxLayout())
-      .then(() => {});
-    // console.warn(
-    //   'Translations to be saved',
-    //   this.convertTranslationsToNgxLayout()
-    // );
+      .then(res => {
+        console.log(res['message']);
+      });
   }
 
   /**

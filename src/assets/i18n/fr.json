@@ -1,5 +1,5 @@
 {
-  "A - Z": "A - Z",
+  "A - Z": "R - P",
   "Christian Life": "Vie Chretienne",
   "Christian Life and Ministry": "Vie Chretienne et Ministere",
   "Students": "Eleves",
@@ -105,7 +105,8 @@
     "items_per_page": "Nombre par page",
     "last_page": "Fin",
     "next_page": "Suivant",
-    "of": "sur"
+    "of": "sur",
+    "previous_page": null
   },
   "menu": "menu",
   "midweek": "Milieu de semaine",
@@ -162,7 +163,6 @@
       "speaker": "Orateur",
       "title": "Discours public"
     },
-    "speaker": "Week-end - Orateur",
     "watchtower": {
       "conductor": "Conducteur TG",
       "reader": "Lecteur TG",

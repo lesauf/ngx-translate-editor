@@ -58,31 +58,10 @@ describe('EditorComponent', () => {
         }
       }
     ]
-    // mocks: [EditorService]
   });
 
   beforeEach(() => {
     editorComponentSpectator = createComponent();
-    // TestBed.configureTestingModule({
-    //   declarations: [EditorComponent],
-    //   imports: [FormsModule, ReactiveFormsModule],
-    //   providers: [
-    //     {
-    //       provide: EditorService,
-    //       useValue: { getTranslations: () => of({}).toPromise() }
-    //     }
-    //   ]
-    // }).compileComponents();
-    // }));
-
-    // // beforeEach(() => {
-    // fixture = TestBed.createComponent(EditorComponent);
-    // component = fixture.componentInstance;
-    // editorService = TestBed.get(EditorService);
-
-    // Mock translations
-
-    // fixture.detectChanges();
   });
 
   it('should exist', () => {

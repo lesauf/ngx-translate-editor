@@ -49,11 +49,40 @@ export class TranslationsController {
    * Send the assignments to the service for storage
    * @type POST
    */
-  static async saveTranslations(req: any, res: any, next: any) {
+  static async saveTranslations(translations: any, res: any, next: any) {
     try {
       // File writing here
+      const files: string[] = await fs.readdir(
+        TranslationsController.translationsFolder
+      );
 
-      return res.status(202).json({ generatedData: 'result' });
+      // Read dir
+      for (let filename of files) {
+        const file: string =
+          TranslationsController.translationsFolder + filename;
+        // Only JSON files
+        const extension = filename.substring(filename.indexOf('.') + 1);
+
+        if (extension == 'json') {
+          const lang = filename.substring(0, filename.indexOf('.'));
+
+          // Check if file is readable
+          const fileStats = await fs.stat(file);
+          if (!(fileStats.mode | fs.S_IRWXO)) {
+            throw 'File Not Readable or Writable by Others';
+          }
+
+          const content: string = await fs.writeFile(
+            file,
+            JSON.stringify(translations[lang], null, 2),
+            'utf8'
+          );
+        }
+      }
+
+      return res
+        .status(202)
+        .json({ message: 'Translations saved successfully' });
     } catch (err) {
       // This is an unexpected error, so pass it on
       return next(err);
