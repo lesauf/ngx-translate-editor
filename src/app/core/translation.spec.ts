@@ -1,7 +1,7 @@
-import { Translation } from './translation';
+import { Translations } from './translation';
 
 describe('Translation', () => {
   it('should create an instance', () => {
-    expect(new Translation()).toBeTruthy();
+    expect(new Translations()).toBeTruthy();
   });
 });

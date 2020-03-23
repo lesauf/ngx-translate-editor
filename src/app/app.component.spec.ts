@@ -26,9 +26,9 @@ describe('AppComponent', () => {
     expect(appComponentSpectator.component).toBeTruthy();
   });
 
-  it(`should have as title 'Ngx Translate Editor'`, () => {
-    expect(appComponentSpectator.query('.content h1').textContent).toContain(
-      'Ngx Translate Editor'
-    );
-  });
+  // it(`should have as title 'Ngx Translate Editor'`, () => {
+  //   expect(appComponentSpectator.query('.content h1').textContent).toContain(
+  //     'Ngx Translate Editor'
+  //   );
+  // });
 });

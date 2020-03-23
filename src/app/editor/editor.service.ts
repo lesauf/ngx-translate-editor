@@ -29,17 +29,22 @@ export class EditorService {
   getTranslations() {
     let translationsPromise: Promise<Translations>;
 
-    if (window.sessionStorage.getItem('translations') !== undefined) {
-      console.log('Fetching translations from session storage');
+    try {
+      if (window.sessionStorage.getItem('translations') !== undefined) {
+        console.log('Fetching translations from session storage');
 
-      translationsPromise = new Promise(
-        JSON.parse(window.sessionStorage.getItem('translations'))
-      );
-    } else {
-      console.log('Fetching translations from server');
+        translationsPromise = new Promise(function(resolve, reject) {
+          resolve(JSON.parse(sessionStorage.getItem('translations')));
+        });
+      } else {
+        console.log('Fetching translations from server');
 
-      translationsPromise = this.apiService.getTranslations();
+        translationsPromise = this.apiService.getTranslations();
+      }
+    } catch (e) {
+      this.handleError(e);
     }
+
     return translationsPromise;
   }
 
@@ -48,12 +53,20 @@ export class EditorService {
    * @param translations
    */
   saveTranslations(translations): Promise<Translations> {
-    console.log('Saving ...');
+    let result: Promise<any>;
 
-    // Store the translations to the session storage
-    window.sessionStorage.setItem('translations', JSON.stringify(translations));
+    try {
+      console.log('Saving ...');
 
-    // return this.http.post('api/translations').toPromise();
-    return this.apiService.createTranslations(translations);
+      // Store the translations to the session storage
+      sessionStorage.setItem('translations', JSON.stringify(translations));
+
+      // return this.http.post('api/translations').toPromise();
+      result = this.apiService.createTranslations(translations);
+    } catch (e) {
+      this.handleError(e);
+    }
+
+    return result;
   }
 }

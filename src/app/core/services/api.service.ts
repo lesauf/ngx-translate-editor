@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Translations } from '../translation';
+import { Observable, throwError } from 'rxjs';
+import { RequestOptions } from 'https';
+import { catchError } from 'rxjs/operators';
 
 /**
  * This service is in charge of all the actual request to the server
@@ -66,7 +69,18 @@ export class ApiService {
   /**
    * Fetch all the translations in all languages
    */
-  public getTranslations() {
-    return this.httpClient.get<Translations>(`${this.apiURL}`).toPromise();
+  getTranslations() {
+    return this.httpClient
+      .get<Translations>(`${this.apiURL}`)
+      .pipe(
+        catchError(err => {
+          console.error(err);
+          // TODO Error handling
+
+          // Rethrow it back to the component
+          return throwError(err);
+        })
+      )
+      .toPromise();
   }
 }

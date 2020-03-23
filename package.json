@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "startserver": "node_modules/.bin/ts-node-dev -r esm server/index.ts",
-    "start": "concurrently -k -c \"yellow.bold,green.bold\" -n \"BUILD,SERVER\" \"ng build --watch\" \"node_modules/.bin/ts-node-dev -r esm server/index.ts\"",
+    "start": "concurrently -k -c \"yellow.bold,green.bold\" -n \"BUILD,SERVER\" \"ng build --aot --watch\" \"node_modules/.bin/ts-node-dev -r esm server/index.ts\"",
     "startold": "concurrently -k -c \"yellow.bold,green.bold\" -n \"ANGULAR,EXPRESS\" \"ng serve --host 0.0.0.0 --port 8080 --disableHostCheck\" \"node_modules/.bin/ts-node-dev -r esm server/index.ts\""
   },
   "keywords": [
@@ -32,6 +32,7 @@
     "@angular/platform-browser": "~9.0.0",
     "@angular/platform-browser-dynamic": "~9.0.0",
     "@angular/router": "~9.0.0",
+    "compression": "^1.7.4",
     "concurrently": "^5.1.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",

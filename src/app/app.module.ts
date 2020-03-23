@@ -24,10 +24,7 @@ export function getTranslations(http: HttpClient) {
       .pipe(
         // Save them in the local storage
         tap(translations =>
-          window.sessionStorage.setItem(
-            'translations',
-            JSON.stringify(translations)
-          )
+          sessionStorage.setItem('translations', JSON.stringify(translations))
         )
       )
       .toPromise();

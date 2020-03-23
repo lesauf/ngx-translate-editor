@@ -1,16 +1,20 @@
 import { TestBed } from '@angular/core/testing';
+import { SpectatorHttp, createHttpFactory } from '@ngneat/spectator/jest';
 
 import { ApiService } from './api.service';
 
 describe('ApiService', () => {
-  let service: ApiService;
+  let spectator: SpectatorHttp<ApiService>;
+  const createHttp = createHttpFactory({
+    service: ApiService,
+    mocks: []
+  });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ApiService);
+    spectator = createHttp();
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(spectator.service).toBeTruthy();
   });
 });

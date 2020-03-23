@@ -1,3 +1,4 @@
+// const compression = require('compression');
 const path = require('path');
 const express = require('express');
 // import * as express from 'express';
@@ -25,6 +26,9 @@ app.use((req: any, res: any, next: any) => {
 
 // Handle POST requests that come in formatted as JSON
 app.use(express.json());
+
+// Gzip compression middleware
+// app.use(compression);
 
 // Choose what fronten framework to serve the dist from
 const distDir = '../dist/';

@@ -59,9 +59,14 @@ export class EditorComponent implements OnInit {
   delimiter = '->';
 
   constructor(private editorService: EditorService) {}
+
   async ngOnInit() {
-    this.translations = await this.editorService.getTranslations();
-    // console.log('Translations: ', this.translations);
+    try {
+      this.translations = await this.editorService.getTranslations();
+      // console.log('Translations: ', this.translations);
+    } catch (e) {
+      console.error(e);
+    }
 
     // First make the sure the default language exist
     if (!this.translations.hasOwnProperty(this.defaultLanguage)) {
