@@ -35,36 +35,28 @@ describe('EditorService', () => {
     expect(editorServiceSpectator.service).toBeTruthy();
   });
 
-  // describe('#getTranslations', () => {
-  //   it('should fetch translations from server if session storage empty', () => {
-  //     const jsonParse = spyOn(JSON, 'parse');
-  //     // const apiService = spyOn(editorServiceSpectator.service..apiService, 'getTranslations()');
+  describe('#getTranslations', () => {
+    it('should fetch translations from session storage', () => {
+      const jsonParse = spyOn(JSON, 'parse');
 
-  //     editorServiceSpectator.service.getTranslations();
+      editorServiceSpectator.service.getTranslations();
 
-  //     if (sessionStorage.getItem('translations') !== undefined) {
-  //       expect(jsonParse).toHaveBeenCalled();
-  //     }
+      expect(jsonParse).toHaveBeenCalled();
+    });
+  });
 
-  //     sessionStorage.removeItem('translations');
-  //     editorServiceSpectator.service.getTranslations();
-  //     editorServiceSpectator.expectOne('api/translations', HttpMethod.GET);
-  //   });
-  // });
+  describe('#saveTranslations', () => {
+    it('should post translations to the server and update session storage', () => {
+      const jsonParse = spyOn(JSON, 'parse');
+      const mockTranslations = { fr: 'vide', en: 'dummy' };
 
-  // describe('#saveTranslations', () => {
-  //   it('should post translations to the server', () => {
-  //     const jsonParse = spyOn(JSON, 'parse');
-  //     const mockTranslations = { fr: 'vide', en: 'dummy' };
-  //     editorServiceSpectator.service.saveTranslations(mockTranslations);
+      editorServiceSpectator.service.saveTranslations(mockTranslations);
 
-  //     const req = editorServiceSpectator.expectOne(
-  //       'api/translations',
-  //       HttpMethod.POST
-  //     );
-  //     expect(req.request.body['fr']).toEqual('vide');
-  //   });
-  // });
+      let valueSaved = JSON.parse(sessionStorage.getItem('translations'));
+
+      expect(valueSaved.fr).toEqual('vide');
+    });
+  });
 
   // it('can test HttpClient.post', () => {
   //   editorServiceSpectator.service.postTodo(1).subscribe();
