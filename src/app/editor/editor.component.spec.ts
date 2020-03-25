@@ -91,27 +91,37 @@ describe('EditorComponent', () => {
     expect(formKey).toEqual(editorComponentSpectator.component.translationKeys);
   });
 
-  it('should call onSubmit on form submit', () => {
+  it('should call onSubmit on form submit', async () => {
     spyOn(editorComponentSpectator.component, 'onSubmit');
     // .and.callThrough();
 
-    const submitButton = editorComponentSpectator.query(
-      'button'
-    ) as HTMLButtonElement;
+    // run ngOnInit
+    editorComponentSpectator.detectChanges();
+
+    // Assert translation form exist
+    const translationForm = editorComponentSpectator.query('form');
+    expect(translationForm).toExist();
+
+    // Assert that a click on submit button trigger the save function
+    const submitButton = editorComponentSpectator.query('button');
     editorComponentSpectator.click(submitButton);
 
     expect(editorComponentSpectator.component.onSubmit).toHaveBeenCalled();
   });
 
   it('should convert back the translations to Ngx form on submit', () => {
-    spyOn(editorComponentSpectator.component, 'convertTranslationsToNgxLayout');
-    // .and.callThrough();
+    spyOn(
+      editorComponentSpectator.component,
+      'convertTranslationsToNgxLayout'
+    ).and.callThrough();
     spyOn(editorComponentSpectator.component, 'onSubmit').and.callThrough();
 
     editorComponentSpectator.component.onSubmit();
+
     expect(
       editorComponentSpectator.component.convertTranslationsToNgxLayout
     ).toHaveBeenCalled();
+
     expect(
       editorComponentSpectator.component.convertTranslationsToNgxLayout()
     ).toEqual(editorComponentSpectator.component.translations);

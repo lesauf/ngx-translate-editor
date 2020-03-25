@@ -20,7 +20,7 @@ describe('EditorService', () => {
         provide: ApiService,
         useValue: {
           getTranslations: () => of({}).toPromise(),
-          saveTranslations: (translations: any) =>
+          createTranslations: (translations: any) =>
             of({ message: 'Translations saved successfully' }).toPromise()
         }
       }
@@ -47,7 +47,9 @@ describe('EditorService', () => {
 
   describe('#saveTranslations', () => {
     it('should post translations to the server and update session storage', () => {
-      const jsonParse = spyOn(JSON, 'parse');
+      // const jsonParse = spyOn(JSON, 'parse');
+      const createTranslations = spyOn(editorServiceSpectator
+        .service.apiService, "createTranslations");
       const mockTranslations = { fr: 'vide', en: 'dummy' };
 
       editorServiceSpectator.service.saveTranslations(mockTranslations);
@@ -55,6 +57,7 @@ describe('EditorService', () => {
       let valueSaved = JSON.parse(sessionStorage.getItem('translations'));
 
       expect(valueSaved.fr).toEqual('vide');
+      expect(createTranslations).toHaveBeenCalled();
     });
   });
 

@@ -17,7 +17,7 @@ export class EditorService {
   private handleError: HandleError;
 
   constructor(
-    private apiService: ApiService,
+    public apiService: ApiService,
     httpErrorHandler: HttpErrorHandler
   ) {
     this.handleError = httpErrorHandler.createHandleError('EditorService');

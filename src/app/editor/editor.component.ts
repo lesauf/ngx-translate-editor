@@ -61,6 +61,7 @@ export class EditorComponent implements OnInit {
   constructor(private editorService: EditorService) {}
 
   async ngOnInit() {
+    // Load the translations
     try {
       this.translations = await this.editorService.getTranslations();
       // console.log('Translations: ', this.translations);
