@@ -1,8 +1,7 @@
 {
   "name": "ngx-translate-editor",
   "version": "0.1.0",
-  "scripts":
-  {
+  "scripts": {
     "ng": "ng",
     "startng": "ng serve --host 0.0.0.0 --port 8080 --disableHostCheck",
     "build": "ng build && cd server && tsc",
@@ -21,8 +20,7 @@
   "author": "Fotso Teketchuet Stephane",
   "license": "MIT",
   "private": true,
-  "dependencies":
-  {
+  "dependencies": {
     "@angular/animations": "~9.0.0",
     "@angular/cdk": "^9.0.0",
     "@angular/common": "~9.0.0",
@@ -34,7 +32,6 @@
     "@angular/platform-browser": "~9.0.0",
     "@angular/platform-browser-dynamic": "~9.0.0",
     "@angular/router": "~9.0.0",
-    "@nativescript/schematics": "^1.0.0",
     "compression": "^1.7.4",
     "concurrently": "^5.1.0",
     "esm": "^3.2.25",
@@ -49,8 +46,7 @@
     "typescript": "^3.7.0",
     "zone.js": "~0.9.1"
   },
-  "devDependencies":
-  {
+  "devDependencies": {
     "@angular-builders/jest": "^8.3.2",
     "@angular-devkit/build-angular": "~0.900.1",
     "@angular/cli": "^9.0.1",
