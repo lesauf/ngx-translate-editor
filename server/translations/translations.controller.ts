@@ -13,7 +13,7 @@ export class TranslationsController {
    * @type GET
    */
   static async getTranslations(req: any, res: any) {
-    let translations: Object = {};
+    let translations: any = {};
 
     const files: string[] = await fs.readdir(
       TranslationsController.translationsFolder
